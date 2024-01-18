@@ -9,6 +9,11 @@ import { useAuthStore } from "@/store/Store";
 
 const MovieList = () => {
   const router = useRouter();
+  const [movies, setMovies] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const moviesPerPage = 8; // Number of movies per page
+  const totalMovies = movies?.length;
+  const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
   const handleCreateMovieClick = () => {
     router.push("/movies/create");
@@ -18,7 +23,6 @@ const MovieList = () => {
     router.push("/login");
   };
   const authToken = localStorage.getItem("token");
-  const [movies, setMovies] = useState<any>(null);
   useEffect(() => {
     const getAllMovies = async () => {
       const allmovies = await movieService.getAllMovies(authToken!);
@@ -26,6 +30,28 @@ const MovieList = () => {
     };
     getAllMovies();
   }, []);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const renderMovies = () => {
+    const startIndex = (currentPage - 1) * moviesPerPage;
+    const endIndex = startIndex + moviesPerPage;
+
+    const slicedMovies = movies?.slice(startIndex, endIndex);
+    console.log("slicedMovies:", slicedMovies);
+
+    return slicedMovies?.map((item: any, key: any) => (
+      <MovieCard
+        key={key}
+        title={item?.title || ''}
+        publishingYear={item?.publishingYear || ''}
+        poster={item?.imageUrl || ''}
+        id={item?.id || 0}
+      />
+    ));
+  };
+
   return (
     <div>
       <div className="text-white text-left flex items-center">
@@ -44,18 +70,19 @@ const MovieList = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {movies &&
-          movies.map((item: any, key: any) => (
-            <MovieCard
-              key={key}
-              title={item.title}
-              publishingYear={item.publishingYear}
-              poster={item.imageUrl}
-              id={item.id}
-            />
-          ))}
+
+        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {renderMovies()}
+        </div>
+        <div className="flex justify-center items-center h-full">
+
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
-      <Pagination />
     </div>
   );
 };

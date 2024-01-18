@@ -75,6 +75,144 @@ export const products = [
     imageAlt:
       "Hand holding black machined steel mechanical pencil with brass tip and top.",
   },
+  ,
+  {
+    id: 9,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  },
+  {
+    id: 10,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  },
+  {
+    id: 11,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 12,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 13,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 14,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 15,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 16,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 17,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 18,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 19,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 20,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 21,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
+  ,
+  {
+    id: 22  ,
+    name: "Movie 1",
+    href: "#",
+    year: "2021",
+    imageSrc: "/images/poster1.png",
+    imageAlt:
+      "Hand holding black machined steel mechanical pencil with brass tip and top.",
+  }
 ];
 
 interface MovieData {
