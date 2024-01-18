@@ -4,6 +4,7 @@ import Image from "next/image";
 import "./globals.css";
 import Vector from "/images/Vectors.png";
 import { Toaster } from "react-hot-toast";
+import PrivateRoute from "@/hooks/PrivateRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
   description: "Movies list",
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}) => {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -32,4 +33,5 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+export default RootLayout;

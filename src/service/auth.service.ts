@@ -18,7 +18,8 @@ const authService = {
     try {
       const httpClient = createHttpsClient();
       const response = await httpClient.post("/auth/signin", formData);
-      useAuthStore.getState().setToken(response.data.token);
+      localStorage.setItem('token',`Bearer ${response.data.token}`);
+      useAuthStore.getState().setToken(`Bearer ${response.data.token}`);
       toast.success("Signin successful!");
       onSuccess();
     } catch (error: any) {

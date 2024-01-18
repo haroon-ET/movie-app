@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { createHttpsClient } from "./https-client";
+import axios from "axios";
 
 export const products = [
   {
@@ -93,7 +94,7 @@ export const movieService = {
       const response = await httpClient.post("/movies", movieData);
       toast.success(editMode ? "updated successfully" : "created Successfully");
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   },
@@ -111,4 +112,46 @@ export const movieService = {
       throw error;
     }
   },
+  getAllMovies: async (authToken: string) => {
+    try {
+      const httpClient = createHttpsClient(authToken);
+      const response = await httpClient.get("/movies");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
+
+export const getS3SignedUrl = async (contentType: string, accessToken: string) => {
+  try {
+    const httpsClient = createHttpsClient(accessToken);
+    const response = await httpsClient.get("/s3/image-signed-url", {
+      params: {
+        contentType,
+      },
+    });
+    return response?.data;
+  } catch (error: any) {
+    console.log(error);
+    toast.error(error ? error.Message : "error occured", { duration: 3000 });
+  }
+};
+
+export const uploadImage = async (
+  url: string,
+  imageSrc: string,
+  contentType: string
+) => {
+  try {
+    const response = await axios.put(url, imageSrc, {
+      headers: {
+        "Content-Type": contentType,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error?.Message, { duration: 3000 });
+  }
 };

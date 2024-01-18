@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import Pagination from "./pagination";
-import { products } from "@/service/movie.service";
+import { movieService, products } from "@/service/movie.service";
 import { AddIcon, LogoutIcon } from "@/assets";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/Store";
 
 const MovieList = () => {
   const router = useRouter();
@@ -13,8 +14,18 @@ const MovieList = () => {
     router.push("/movies/create");
   };
   const handleNavigateToLogout = () => {
+    useAuthStore.getState().setToken("");
     router.push("/login");
   };
+  const authToken = localStorage.getItem("token");
+  const [movies, setMovies] = useState<any>(null);
+  useEffect(() => {
+    const getAllMovies = async () => {
+      const allmovies = await movieService.getAllMovies(authToken!);
+      setMovies(allmovies);
+    };
+    getAllMovies();
+  }, []);
   return (
     <div>
       <div className="text-white text-left flex items-center">
@@ -33,15 +44,16 @@ const MovieList = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {products.map((item, key) => (
-          <MovieCard
-            key={key}
-            title={item.name}
-            publishingYear={item.year}
-            poster={item.imageSrc}
-            id={item.id}
-          />
-        ))}
+        {movies &&
+          movies.map((item: any, key: any) => (
+            <MovieCard
+              key={key}
+              title={item.title}
+              publishingYear={item.publishingYear}
+              poster={item.imageUrl}
+              id={item.id}
+            />
+          ))}
       </div>
       <Pagination />
     </div>

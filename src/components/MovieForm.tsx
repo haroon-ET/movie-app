@@ -1,6 +1,6 @@
 "use client";
 import { DropIcon } from "@/assets/DropIcon";
-import { movieService } from "@/service/movie.service";
+import { getS3SignedUrl, movieService, uploadImage } from "@/service/movie.service";
 import { useAuthStore } from "@/store/Store";
 import { useRouter } from "next/navigation";
 import { title } from "process";
@@ -39,18 +39,26 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
       reader.readAsDataURL(file);
     }
   };
-  const authToken: any = useAuthStore((state) => state.token);
+  // const authToken: any = useAuthStore((state) => state.token);
+  const authToken: any = localStorage.getItem('token');
   console.log(authToken);
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+    const signedUrl = await getS3SignedUrl('image/jpeg', authToken);
+    console.log(signedUrl);
+    const url = signedUrl?.preSignedUrl.split('?Content-Type')[0];
+    console.log(url);
+    await uploadImage(url,selectedImage,'image/jpeg');
+    const key = signedUrl?.key;
       !editMode
         ? movieService.createMovie(
-            { ...data, imageUrl: selectedImage },
+            { ...data, imageUrl: url },
             authToken,
             editMode!
           )
         : movieService.editMovie(
-            { ...data, imageUrl: selectedImage },
+            { ...data, imageUrl: url },
             authToken,
             editMode!
           );

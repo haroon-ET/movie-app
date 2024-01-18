@@ -3,11 +3,11 @@
 import { create } from "zustand";
 
 interface AuthStore {
-  token: string | null;
-  setToken: (token: string | null) => void;
+  token: string;
+  setToken: (token: string) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  token: null,
-  setToken: (token: string | null) => set({ token: token }),
+  token: "",
+  setToken: (token: string) => localStorage.setItem("token", token),
 }));
