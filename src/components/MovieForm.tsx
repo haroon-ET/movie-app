@@ -58,6 +58,10 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
     }
   }, [editMode, initialValues, setValue]);
 
+  const handleNavigateToMovies = () => {
+    router.push("/movies");
+  }
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const authToken: any = localStorage.getItem("token");
@@ -174,6 +178,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
               <button
                 type="button"
                 className="text-white font-montserrat font-semibold rounded-lg border bg-transparent-600 inline-flex items-center justify-center h-11 w-40"
+                onClick={handleNavigateToMovies}
               >
                 Cancel
               </button>
