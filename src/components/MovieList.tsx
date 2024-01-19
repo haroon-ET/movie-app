@@ -6,12 +6,14 @@ import { movieService, products } from "@/service/movie.service";
 import { AddIcon, LogoutIcon } from "@/assets";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/Store";
+import { useMovieStore } from "@/store/movieStore";
+import EmptyList from "./EmptyList";
 
 const MovieList = () => {
   const router = useRouter();
-  const [movies, setMovies] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 8; // Number of movies per page
+  const { movies, setMovies } = useMovieStore();
+  const [currentPage, setCurrentPage] = useState(0);
+  const moviesPerPage = 6; // Number of movies per page
   const totalMovies = movies?.length;
   const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
@@ -22,11 +24,17 @@ const MovieList = () => {
     useAuthStore.getState().setToken("");
     router.push("/login");
   };
+
   const authToken = localStorage.getItem("token");
+
   useEffect(() => {
     const getAllMovies = async () => {
-      const allmovies = await movieService.getAllMovies(authToken!);
-      setMovies(allmovies);
+      const allMovies = await movieService.getAllMovies(
+        authToken!,
+        currentPage,
+        moviesPerPage
+      );
+      setMovies(allMovies);
     };
     getAllMovies();
   }, []);
@@ -44,9 +52,9 @@ const MovieList = () => {
     return slicedMovies?.map((item: any, key: any) => (
       <MovieCard
         key={key}
-        title={item?.title || ''}
-        publishingYear={item?.publishingYear || ''}
-        poster={item?.imageUrl || ''}
+        title={item?.title || ""}
+        publishingYear={item?.publishingYear || ""}
+        poster={item?.imageUrl || ""}
         id={item?.id || 0}
       />
     ));
@@ -69,19 +77,17 @@ const MovieList = () => {
           <LogoutIcon onClick={handleNavigateToLogout} />
         </div>
       </div>
+
       <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-
-        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {renderMovies()}
-        </div>
-        <div className="flex justify-center items-center h-full">
-
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {movies.length > 0 ? renderMovies() : <EmptyList />}
+      </div>
+      <div className="flex justify-center items-center h-full">
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          movies={movies}
+        />
       </div>
     </div>
   );

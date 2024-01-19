@@ -3,10 +3,11 @@ import React from "react";
 interface PaginationProps {
   totalPages: number;
   currentPage: number;
+  movies: any;
   onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange, movies }) => {
   const handlePageClick = (page: number) => {
     onPageChange(page);
   };

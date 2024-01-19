@@ -250,16 +250,28 @@ export const movieService = {
       throw error;
     }
   },
-  getAllMovies: async (authToken: string) => {
+  getAllMovies: async (authToken: string, offset: number, limit: number) => {
     try {
       const httpClient = createHttpsClient(authToken);
-      const response = await httpClient.get("/movies");
+      const response = await httpClient.get("/movies", {
+        params: { offset, limit },
+      });
       console.log(response.data);
       return response.data;
     } catch (error) {
       throw error;
     }
-  }
+  },
+  fetchMovieById: async(authToken:string,id:string) => {
+    try {
+      const httpClient = createHttpsClient(authToken);
+      const response = await httpClient.get(`/movies/${id}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }  
 };
 
 export const getS3SignedUrl = async (contentType: string, accessToken: string) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { AddIcon, LogoutIcon } from "@/assets";
+import Link from "next/link";
 
 interface MovieCardProps {
   id: number;
@@ -36,12 +37,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
             className="w-full h-full object-cover object-center group-hover:opacity-75 rounded"
           />
         </div>
-        <h3 className="mt-2 text-base font-medium text-white leading-6 font-montserrat">
+        <Link
+          href={{ pathname: "/movies/edit", query: { id: id } }}
+          className="cursor-pointer mt-2 text-base font-medium text-white leading-6 font-montserrat"
+        >
           {title}
-        </h3>
-        <p className="mt-1 text-lg font-medium text-white">
-          {publishingYear}
-        </p>
+        </Link>
+        <p className="mt-1 text-lg font-medium text-white">{publishingYear}</p>
       </a>
     </div>
   );

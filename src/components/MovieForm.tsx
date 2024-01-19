@@ -1,6 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { DropIcon } from "@/assets/DropIcon";
-import { getS3SignedUrl, movieService, uploadImage } from "@/service/movie.service";
+import {
+  getS3SignedUrl,
+  movieService,
+  uploadImage,
+} from "@/service/movie.service";
 import { useAuthStore } from "@/store/Store";
 import { useRouter } from "next/navigation";
 import { title } from "process";
@@ -9,21 +14,23 @@ import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
-interface MovieFormProps {
-  editMode?: boolean;
-}
-
 interface FormData {
   title: string;
   publishingYear: number;
   imageUrl: string;
 }
 
-const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
+interface MovieFormProps {
+  editMode?: boolean;
+  initialValues?: FormData;
+}
+
+const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormData>();
   const [selectedImage, setSelectedImage] = useState<string>("");
@@ -40,29 +47,36 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
       reader.readAsDataURL(file);
     }
   };
-  // const authToken: any = useAuthStore((state) => state.token);
-  const authToken: any = localStorage.getItem('token');
+
+  const authToken: any = localStorage.getItem("token");
   console.log(authToken);
+  useEffect(() => {
+    if (editMode && initialValues) {
+      Object.entries(initialValues).forEach(([key, value]: any) => {
+        setValue(key, value);
+      });
+    }
+  }, [editMode, initialValues, setValue]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const signedUrl = await getS3SignedUrl('image/jpeg', authToken);
+      const signedUrl = await getS3SignedUrl("image/jpeg", authToken);
       console.log(signedUrl);
-      const url = signedUrl?.preSignedUrl.split('?Content-Type')[0];
+      const url = signedUrl?.preSignedUrl.split("?Content-Type")[0];
       console.log(url);
-      await uploadImage(url, selectedImage, 'image/jpeg');
+      await uploadImage(url, selectedImage, "image/jpeg");
       const key = signedUrl?.key;
       !editMode
         ? movieService.createMovie(
-          { ...data, imageUrl: url },
-          authToken,
-          editMode!
-        )
+            { ...data, imageUrl: url },
+            authToken,
+            editMode!
+          )
         : movieService.editMovie(
-          { ...data, imageUrl: url },
-          authToken,
-          editMode!
-        );
+            { ...data, imageUrl: url },
+            authToken,
+            editMode!
+          );
       router.push("/movies");
     } catch (error: any) {
       toast.error(error.message);
@@ -84,12 +98,18 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
                 src={selectedImage}
                 alt="Selected Poster"
                 className="h-full w-full object-cover rounded-md"
-                style={{ maxWidth: "200px", maxHeight: "200px", marginBottom: '10px' }}
+                style={{
+                  maxWidth: "200px",
+                  maxHeight: "200px",
+                  marginBottom: "10px",
+                }}
               />
             )}
             {!selectedImage && <DropIcon className="h-24 w-24" />}
             <label htmlFor="upload" className="cursor-pointer">
-              <p className="mt-1 text-white text-xs">Drop an image here</p>
+              <p className="mt-1 text-white text-xs">
+                {selectedImage ? "Change Image" : "Drop an image here"}
+              </p>
             </label>
             <input
               id="upload"
@@ -114,8 +134,9 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
                   autoComplete="title"
                   name="title"
                   required
-                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.title ? "border-red-500" : ""
-                    }`}
+                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
+                    errors.title ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.title && (
                   <span className="text-sm text-red-500">
@@ -136,8 +157,9 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode }) => {
                   placeholder="Publishing year"
                   name="publishingYear"
                   required
-                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.publishingYear ? "border-red-500" : ""
-                    }`}
+                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
+                    errors.publishingYear ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.publishingYear && (
                   <span className="text-sm text-red-500">
