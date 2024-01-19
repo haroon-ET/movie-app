@@ -6,7 +6,6 @@ import {
   movieService,
   uploadImage,
 } from "@/service/movie.service";
-import { useAuthStore } from "@/store/Store";
 import { useRouter, useSearchParams } from "next/navigation";
 import { title } from "process";
 import { useState } from "react";
@@ -42,7 +41,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImage(file);
-    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -53,7 +51,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
   };
 
   const authToken: any = localStorage.getItem("token");
-  console.log(authToken);
   useEffect(() => {
     if (editMode && initialValues) {
       Object.entries(initialValues).forEach(([key, value]: any) => {
@@ -65,9 +62,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const signedUrl = await getS3SignedUrl("image/jpeg", authToken);
-      console.log(signedUrl);
       const url = signedUrl?.preSignedUrl.split("?Content-Type")[0];
-      console.log(url);
       await uploadImage(signedUrl?.preSignedUrl, image, "image/jpeg");
       const key = signedUrl?.key;
       !editMode

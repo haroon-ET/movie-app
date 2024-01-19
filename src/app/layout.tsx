@@ -13,23 +13,24 @@ export const metadata: Metadata = {
   description: "Movies list",
 };
 
-const RootLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="top-center" />
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          {children}
+          <PrivateRoute>{children}</PrivateRoute>
         </main>
         <img
-            src="/images/Vectors.png"
-            alt="background"
-            style={{ width: "100vw", position: "fixed", bottom: "0", zIndex: '-1' }}
-          />
+          src="/images/Vectors.png"
+          alt="background"
+          style={{
+            width: "100vw",
+            position: "fixed",
+            bottom: "0",
+            zIndex: "-1",
+          }}
+        />
       </body>
     </html>
   );

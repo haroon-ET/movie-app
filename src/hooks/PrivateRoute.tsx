@@ -1,10 +1,9 @@
 "use client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/Store";
 
 const PrivateRoute = ({ children }: any) => {
-  const { token } = useAuthStore();
+  const token = localStorage.getItem("token");
   const router = useRouter();
 
   useEffect(() => {

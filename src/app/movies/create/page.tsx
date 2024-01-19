@@ -1,4 +1,4 @@
-import MovieForm from '@/components/MovieForm';
+import MovieForm from "@/components/MovieForm";
 
 const CreateMoviePage = () => {
   return <MovieForm />;
