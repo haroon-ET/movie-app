@@ -50,7 +50,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
     }
   };
 
-  const authToken: any = localStorage.getItem("token");
   useEffect(() => {
     if (editMode && initialValues) {
       Object.entries(initialValues).forEach(([key, value]: any) => {
@@ -61,22 +60,23 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+      const authToken: any = localStorage.getItem("token");
       const signedUrl = await getS3SignedUrl("image/jpeg", authToken);
       const url = signedUrl?.preSignedUrl.split("?Content-Type")[0];
       await uploadImage(signedUrl?.preSignedUrl, image, "image/jpeg");
       const key = signedUrl?.key;
       !editMode
         ? movieService.createMovie(
-          { ...data, imageUrl: url },
-          authToken,
-          editMode!
-        )
+            { ...data, imageUrl: url },
+            authToken,
+            editMode!
+          )
         : movieService.editMovie(
-          { ...data, imageUrl: url },
-          authToken,
-          editMode!,
-          id!
-        );
+            { ...data, imageUrl: url },
+            authToken,
+            editMode!,
+            id!
+          );
       router.push("/movies");
     } catch (error: any) {
       toast.error(error.message);
@@ -102,7 +102,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                   marginBottom: "10px",
                   marginTop: "10px",
                   marginLeft: "3px",
-                  marginRight: "3px  "
+                  marginRight: "3px  ",
                 }}
               />
             )}
@@ -135,8 +135,9 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                   autoComplete="title"
                   name="title"
                   required
-                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.title ? "border-red-500" : ""
-                    }`}
+                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
+                    errors.title ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.title && (
                   <span className="text-sm text-red-500">
@@ -157,8 +158,9 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                   placeholder="Publishing year"
                   name="publishingYear"
                   required
-                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.publishingYear ? "border-red-500" : ""
-                    }`}
+                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
+                    errors.publishingYear ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.publishingYear && (
                   <span className="text-sm text-red-500">

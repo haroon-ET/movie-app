@@ -22,8 +22,8 @@ const MovieList = () => {
     router.push("/login");
   };
 
-  const authToken = localStorage.getItem("token");
   useEffect(() => {
+    const authToken = localStorage.getItem("token");
     const getAllMovies = async () => {
       const allMovies = await movieService.getAllMovies(
         authToken!,
