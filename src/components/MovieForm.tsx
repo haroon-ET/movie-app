@@ -67,31 +67,29 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
       const key = signedUrl?.key;
       !editMode
         ? movieService.createMovie(
-            { ...data, imageUrl: url },
-            authToken,
-            editMode!
-          )
+          { ...data, imageUrl: url },
+          authToken,
+          editMode!
+        )
         : movieService.editMovie(
-            { ...data, imageUrl: url },
-            authToken,
-            editMode!,
-            id!
-          );
+          { ...data, imageUrl: url },
+          authToken,
+          editMode!,
+          id!
+        );
       router.push("/movies");
     } catch (error: any) {
       toast.error(error.message);
     }
   };
-  const headingText = "Create a new movie";
-  const editText = "Edit";
 
   return (
-    <div className="flex fixed right-0 top-0 h-full w-full bg-gray-800">
-      <div className="flex-shrink-0 w-1/2 bg-transparent-200 p-8 flex flex-col mt-8 ml-20">
-        <h1 className="text-white font-montserrat text-4xl font-semibold tracking-wide mb-4">
-          {editMode ? editText : headingText}
+    <div className="flex flex-col sm:flex-row min-h-screen">
+      <div className="w-full sm:w-1/2 p-8 flex flex-col mt-8 ml-0 sm:ml-20">
+        <h1 className="text-white font-montserrat text-4xl font-semibold tracking-wide mb-4 text-center sm:text-left whitespace-nowrap">
+          {editMode ? "Edit" : "Create a new movie"}
         </h1>
-        <div className="h-3/5 w-3/5 bg-box-color rounded-lg border border-dotted border-white-600 mb-4 flex items-center justify-center mt-8">
+        <div className="h-48 sm:w-48 bg-box-color rounded-lg border border-dotted border-white-600 mb-4 flex items-center justify-center mt-8 mx-auto sm:mx-0">
           <div className="flex flex-col items-center justify-center">
             {selectedImage && (
               <img
@@ -99,9 +97,12 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                 alt="Selected Poster"
                 className="h-full w-full object-cover rounded-md"
                 style={{
-                  maxWidth: "200px",
-                  maxHeight: "200px",
+                  maxWidth: "150px",
+                  maxHeight: "150px",
                   marginBottom: "10px",
+                  marginTop: "10px",
+                  marginLeft: "3px",
+                  marginRight: "3px  "
                 }}
               />
             )}
@@ -121,8 +122,8 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
           </div>
         </div>
       </div>
-      <div className="flex-grow bg-transparent-200 p-8 flex flex-col mt-28 mr-32 absolute left-1/2 top-12">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex-grow p-8 flex flex-col mt-4 sm:mt-28 mx-auto sm:mx-32">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div className="mt-1">
@@ -134,9 +135,8 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                   autoComplete="title"
                   name="title"
                   required
-                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
-                    errors.title ? "border-red-500" : ""
-                  }`}
+                  className={`block w-80 rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.title ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.title && (
                   <span className="text-sm text-red-500">
@@ -157,9 +157,8 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
                   placeholder="Publishing year"
                   name="publishingYear"
                   required
-                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${
-                    errors.publishingYear ? "border-red-500" : ""
-                  }`}
+                  className={`block w-48 font-montserrat rounded-md py-2.5 pl-4 bg-custom-color text-white shadow-sm ring-inset ring-gray-transparent focus:ring-1 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 placeholder-gray-300 ${errors.publishingYear ? "border-red-500" : ""
+                    }`}
                 />
                 {errors.publishingYear && (
                   <span className="text-sm text-red-500">

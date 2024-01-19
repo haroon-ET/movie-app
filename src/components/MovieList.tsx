@@ -39,7 +39,7 @@ const MovieList = () => {
     <div>
       <div className="text-white text-left flex items-center">
         <div className="flex items-center" onClick={handleCreateMovieClick}>
-          <h2 className="font-montserrat text-4xl font-semibold leading-10 mr-2">
+          <h2 className="font-montserrat text-4xl font-semibold leading-10 mr-2 whitespace-nowrap">
             My movies
           </h2>
           <AddIcon onClick={handleCreateMovieClick} />
