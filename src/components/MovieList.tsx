@@ -11,7 +11,7 @@ import EmptyList from "./EmptyList";
 const MovieList = () => {
   const router = useRouter();
   const { movies, setMovies } = useMovieStore();
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState<any>(0);
   const moviesPerPage = 8;
 
   const handleCreateMovieClick = () => {
@@ -25,20 +25,28 @@ const MovieList = () => {
   useEffect(() => {
     const authToken = localStorage.getItem("token");
     const getAllMovies = async () => {
-      const allMovies = await movieService.getAllMovies(
+      const offset = currentPage;
+      const newMovies = await movieService.getAllMovies(
         authToken!,
-        currentPage,
+        offset,
         moviesPerPage
       );
-      setMovies(allMovies);
+
+      setMovies(newMovies);
     };
     getAllMovies();
   }, [currentPage, setMovies]);
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
   return (
     <div>
       <div className="text-white text-left flex items-center">
-        <div className="flex items-center cursor-pointer" onClick={handleCreateMovieClick}>
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handleCreateMovieClick}
+        >
           <h2 className="font-montserrat text-4xl font-semibold leading-10 mr-2 whitespace-nowrap">
             My movies
           </h2>
@@ -54,7 +62,7 @@ const MovieList = () => {
       </div>
       {movies.length > 0 ? (
         <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {movies.map((item: any, key) => (
+          {movies?.map((item: any, key) => (
             <MovieCard
               key={key}
               title={item?.title || ""}
@@ -71,8 +79,8 @@ const MovieList = () => {
         <Pagination
           currentPage={currentPage}
           totalMovies={movies.length}
-          MoviesPerPage={moviesPerPage}
-          setCurrentPage={setCurrentPage}
+          moviesPerPage={moviesPerPage}
+          handlePageChange={handlePageChange}
         />
       </div>
     </div>
