@@ -38,14 +38,14 @@ const MovieList = () => {
   return (
     <div>
       <div className="text-white text-left flex items-center">
-        <div className="flex items-center" onClick={handleCreateMovieClick}>
+        <div className="flex items-center cursor-pointer" onClick={handleCreateMovieClick}>
           <h2 className="font-montserrat text-4xl font-semibold leading-10 mr-2 whitespace-nowrap">
             My movies
           </h2>
           <AddIcon onClick={handleCreateMovieClick} />
         </div>
         <div
-          className="ml-auto flex items-center"
+          className="ml-auto flex items-center cursor-pointer"
           onClick={handleNavigateToLogout}
         >
           <h3 className="ml-2 mr-2">Logout</h3>
