@@ -12,7 +12,7 @@ import EmptyList from "./EmptyList";
 const MovieList = () => {
   const router = useRouter();
   const { movies, setMovies } = useMovieStore();
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 6; // Number of movies per page
   const totalMovies = movies?.length;
   const totalPages = Math.ceil(totalMovies / moviesPerPage);
@@ -28,18 +28,21 @@ const MovieList = () => {
   const authToken = localStorage.getItem("token");
 
   useEffect(() => {
+    const zeroBasedPage = currentPage - 1;
+
     const getAllMovies = async () => {
       const allMovies = await movieService.getAllMovies(
         authToken!,
-        currentPage,
+        zeroBasedPage,
         moviesPerPage
       );
       setMovies(allMovies);
     };
     getAllMovies();
-  }, []);
+
+  }, [currentPage]);
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setCurrentPage(page+1);
   };
 
   const renderMovies = () => {
@@ -55,7 +58,7 @@ const MovieList = () => {
         title={item?.title || ""}
         publishingYear={item?.publishingYear || ""}
         poster={item?.imageUrl || ""}
-        id={item?.id || 0}
+        id={item?.id || 1}
       />
     ));
   };
