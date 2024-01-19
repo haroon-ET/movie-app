@@ -7,7 +7,7 @@ import {
   uploadImage,
 } from "@/service/movie.service";
 import { useAuthStore } from "@/store/Store";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { title } from "process";
 import { useState } from "react";
 import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
@@ -34,11 +34,15 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
     formState: { errors },
   } = useForm<FormData>();
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const [image, setImage] = useState<any>("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
+    setImage(file);
+    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -64,7 +68,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
       console.log(signedUrl);
       const url = signedUrl?.preSignedUrl.split("?Content-Type")[0];
       console.log(url);
-      await uploadImage(url, selectedImage, "image/jpeg");
+      await uploadImage(signedUrl?.preSignedUrl, image, "image/jpeg");
       const key = signedUrl?.key;
       !editMode
         ? movieService.createMovie(
@@ -75,7 +79,8 @@ const MovieForm: React.FC<MovieFormProps> = ({ editMode, initialValues }) => {
         : movieService.editMovie(
             { ...data, imageUrl: url },
             authToken,
-            editMode!
+            editMode!,
+            id!
           );
       router.push("/movies");
     } catch (error: any) {

@@ -239,11 +239,12 @@ export const movieService = {
   editMovie: async (
     movieData: MovieData,
     authToken: string,
-    editMode: boolean
+    editMode: boolean,
+    id:string,
   ) => {
     try {
       const httpClient = createHttpsClient(authToken);
-      const response = await httpClient.put("/movies", movieData);
+      const response = await httpClient.put(`/movies/${id}`, movieData);
       toast.success(editMode ? "updated successfully" : "created Successfully");
       return response.data;
     } catch (error) {
@@ -292,10 +293,12 @@ export const getS3SignedUrl = async (contentType: string, accessToken: string) =
 export const uploadImage = async (
   url: string,
   imageSrc: string,
-  contentType: string
+  contentType: string,
 ) => {
+  console.log(imageSrc);
   try {
-    const response = await axios.put(url, imageSrc, {
+    const httpsClient = createHttpsClient();
+    const response = await httpsClient.put(url, imageSrc, {
       headers: {
         "Content-Type": contentType,
       },

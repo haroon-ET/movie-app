@@ -77,10 +77,13 @@ const MovieList = () => {
           <LogoutIcon onClick={handleNavigateToLogout} />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {movies.length > 0 ? renderMovies() : <EmptyList />}
-      </div>
+      {movies.length > 0 ? (
+        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {renderMovies()}
+        </div>
+      ) : (
+        <EmptyList />
+      )}
       <div className="flex justify-center items-center h-full">
         <Pagination
           totalPages={totalPages}
