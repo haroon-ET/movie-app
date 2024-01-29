@@ -37,11 +37,11 @@ export const movieService = {
       throw error;
     }
   },
-  getAllMovies: async (authToken: string, offset: number, limit: number) => {
+  getAllMovies: async (authToken: string, page?: number, limit?: number) => {
     try {
       const httpClient = createHttpsClient(authToken);
       const response = await httpClient.get("/movies", {
-        params: { offset, limit },
+        params: { page, limit },
       });
       return response.data;
     } catch (error) {

@@ -11,6 +11,7 @@ import EmptyList from "./EmptyList";
 const MovieList = () => {
   const router = useRouter();
   const { movies, setMovies } = useMovieStore();
+  const [totalCount, setCount] = useState(null);
   const [currentPage, setCurrentPage] = useState<any>(0);
   const moviesPerPage = 8;
 
@@ -25,14 +26,14 @@ const MovieList = () => {
   useEffect(() => {
     const authToken = localStorage.getItem("token");
     const getAllMovies = async () => {
-      const offset = currentPage;
       const newMovies = await movieService.getAllMovies(
         authToken!,
-        offset,
+        currentPage,
         moviesPerPage
       );
 
-      setMovies(newMovies);
+      setMovies(newMovies.movies);
+      setCount(newMovies.count);
     };
     getAllMovies();
   }, [currentPage, setMovies]);
@@ -78,7 +79,7 @@ const MovieList = () => {
       <div className="flex justify-center items-center h-full">
         <Pagination
           currentPage={currentPage}
-          totalMovies={movies.length}
+          totalMovies={totalCount}
           moviesPerPage={moviesPerPage}
           handlePageChange={handlePageChange}
         />
