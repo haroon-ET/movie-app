@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 : "bg-#2BD17E-600 text-white border border-gray-300 hover:bg-gray-600 font-montserrat"
             } px-4 py-2 text-sm font-semibold mx-1 focus:z-10 focus-visible:outline focus-visible:outline-1 font-montserrat focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
           >
-            {page}
+            {page+1}
           </button>
         );
       })}
