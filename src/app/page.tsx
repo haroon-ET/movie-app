@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Movies from "./movies/page";
+import PrivateRoute from "@/hooks/PrivateRoute";
 
-export default function Home() {
+const Home = () => {
   return <Movies />;
-}
+};
+
+export default PrivateRoute(Home);

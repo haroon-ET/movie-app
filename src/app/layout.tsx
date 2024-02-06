@@ -5,6 +5,7 @@ import "./globals.css";
 import Vector from "/images/Vectors.png";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "@/hooks/PrivateRoute";
+import Home from "./page";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={inter.className}>
         <Toaster position="top-center" />
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <PrivateRoute>{children}</PrivateRoute>
-        </main>
         <img
           src="/images/Vectors.png"
           alt="background"
